@@ -1,0 +1,125 @@
+#pragma once
+#include <string>
+using namespace std;
+class myClass
+{
+private:
+	int t;
+public:
+	myClass(int a);
+	string encryption(string str);
+	string decryption(string str);
+};
+
+
+
+
+#include "stdafx.h"
+#include <iostream>
+#include <string>
+using namespace std;
+myClass::myClass(int a)
+{
+	if ((a < 1) || (a > 25))
+	{
+		cout << "Сдвиг должен быть в пределах 1..25" << endl;
+	}
+	t = a;
+}
+string myClass::encryption(string s)
+{
+	string s2;
+	for (int i = 0; i < s.length(); i++)//Определяет длину строки
+	{
+		s[i] = toupper(s[i]);//выполняет преобразование строчных букв в прописные. 
+		if ((s[i] >= 'A') && (s[i] <= 'Z'))
+		{
+			if ((s[i] - 'A' + t >= 26)) {
+				s2 += (s[i] + t - 26);
+			}
+			else
+			{
+				s2 += (s[i] + t);
+			}
+		}
+		else
+		{
+			if ((s[i] == ',') || (s[i] == '.') || (s[i] == ' ') || (s[i] == '\t'))//Пропускает эти символы
+			{
+				continue;
+			}
+			else
+			{
+				cout << "Принимает только английские буквы" << endl;
+			}
+		}
+	}
+	return s2;
+}
+
+string myClass::decryption(string s)
+{
+	string s2;
+	for (int i = 0; i < s.length(); i++)
+	{
+		s[i] = toupper(s[i]);
+		if ((s[i] >= 'A') && (s[i] <= 'Z'))
+		{
+			if ((s[i] - 'A' - t < 0))
+			{
+				s2 += s[i] - t + 26;
+			}
+			else
+			{
+				s2 += s[i] - t;
+			}
+		}
+		else
+		{
+			if ((s[i] == ',') || (s[i] == '.') || (s[i] == ' ') || (s[i] == '\t'))
+			{
+				continue;
+			}
+			else
+			{
+				cout << "Принимает только английские буквы" << endl;
+			}
+		}
+	}
+	return s2;
+}
+
+
+
+
+
+
+#include "stdafx.h"
+#include <iostream>
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	int t;
+	string str;
+	cout << "cдвиг" << endl;
+	cin >> t;
+	myClass c(t);
+	cout << "Операция: 01- шифровка, 10 - дешифровка" << endl;
+	cin >> t;
+	getline(cin, str);//Ввод данных из потока
+	if (t == 01)//Если шифровка
+	{
+		cout << "Введите строку" << endl;
+		getline(cin, str);
+		cout << "Зашифрованная строка: " << endl;
+		cout << c.encryption(str) << endl;// Происходит зашифровка
+	}
+	if (t == 10)//Если дешифровка
+	{
+		cout << "Введите строку" << endl;
+		getline(cin, str);
+		cout << "Расшифрованная строка: " << endl;//Происходит дешифровка 
+		cout << c.decryption(str) << endl;
+	}
+	return 0;
+}
